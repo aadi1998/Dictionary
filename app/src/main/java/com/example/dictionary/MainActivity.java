@@ -13,10 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-private Button insert;
+    public static ArrayList<WordItem> myWordList;
+    public static RecyclerView.Adapter myAdapter;
     private RecyclerView myRecyclerView;
-    private RecyclerView.Adapter myAdapter;
+    private Button insert;
     private RecyclerView.LayoutManager myLayoutManager;
+
+    public static int arraySize() {
+        return myWordList.size();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,27 +30,37 @@ private Button insert;
         setContentView(R.layout.activity_main);
 
         insert = findViewById(R.id.insert);
-        insert.setOnClickListener(new View.OnClickListener(){
+        insert.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 openInsertActivity();
             }
         });
-        ArrayList<WordItem> wordList = new ArrayList<>();
-        wordList.add(new WordItem("Andrianampoinimerina's"));
-        wordList.add(new WordItem("These"));
-        wordList.add(new WordItem("Those"));
 
+
+        myWordList = new ArrayList<>();
+        createWordList();
+        buildRecyclerView();
+
+    }
+
+    public void createWordList() {
+        myWordList.add(new WordItem("Andrianampoinimerina's"));
+        myWordList.add(new WordItem("These"));
+        myWordList.add(new WordItem("Those"));
+    }
+
+    public void buildRecyclerView() {
         myRecyclerView = findViewById(R.id.recyclerView);
         myRecyclerView.setHasFixedSize(true);
         myLayoutManager = new LinearLayoutManager(this);
-        myAdapter = new WordAdapter(wordList);
+        myAdapter = new WordAdapter(myWordList);
 
         myRecyclerView.setLayoutManager(myLayoutManager);
         myRecyclerView.setAdapter(myAdapter);
     }
 
-    public void openInsertActivity(){
+    public void openInsertActivity() {
         Intent intent = new Intent(this, InsertWordActivity.class);
         startActivity(intent);
     }

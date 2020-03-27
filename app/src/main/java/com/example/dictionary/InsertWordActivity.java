@@ -1,24 +1,53 @@
 package com.example.dictionary;
 
-import android.annotation.SuppressLint;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class InsertWordActivity extends AppCompatActivity {
+    public EditText insertWord;
+    public Button insertButton;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_insert_word);}
+        setContentView(R.layout.activity_insert_word);
+
+
+        insertWord = findViewById(R.id.insertText);
+        insertButton = findViewById(R.id.insert);
+        insertButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                gets the array size from main activity so as to input new word at bottom of array
+                int position = MainActivity.arraySize();
+                String s = insertWord.getText().toString();
+//                 Passes the word to be inserted. Displays the new word has been inserted in the list.
+
+                Toast.makeText(getApplicationContext(), s + " has been inserted in the list", Toast.LENGTH_SHORT).show();
+                insertItem(position, s);
+            }
+        });
+
+
+    }
+
+    public void insertItem(int position, String newWord) {
+
+        MainActivity.myWordList.add(position, new WordItem(newWord));
+        MainActivity.myAdapter.notifyItemInserted(position);
+    }
+
+
 //    /**
 //     * Whether or not the system UI should be auto-hidden after
 //     * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
