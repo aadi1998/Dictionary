@@ -2,6 +2,7 @@ package com.example.dictionary;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,18 +30,24 @@ public class InsertWordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                gets the array size from main activity so as to input new word at bottom of array
+                insertWord.onEditorAction(EditorInfo.IME_ACTION_DONE);
                 int position = MainActivity.arraySize();
                 String s = insertWord.getText().toString();
+                if (s.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), s + "Invalid Word", Toast.LENGTH_LONG).show();
+                }
 //                 Passes the word to be inserted. Displays the new word has been inserted in the list.
-
-                Toast.makeText(getApplicationContext(), s + " has been inserted in the list", Toast.LENGTH_SHORT).show();
-                insertItem(position, s);
+                else {
+                    Toast.makeText(getApplicationContext(), s + " has been inserted in the list", Toast.LENGTH_LONG).show();
+                    insertItem(position, s);
+                }
             }
         });
 
 
     }
 
+    //    Adds a new word item at the appropriate index
     public void insertItem(int position, String newWord) {
 
         MainActivity.myWordList.add(position, new WordItem(newWord));
